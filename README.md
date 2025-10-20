@@ -70,7 +70,7 @@ $ docker run -d \
   ghcr.io/open-webui/open-webui:ollama
 ```
 
-```json
+```
 Continue.dev's model setting, add:
 
     {
@@ -86,7 +86,31 @@ Continue.dev's model setting, add:
 ----
 ### Fine-tune an existing model
 ```
-TBA
+Unsloth
+Pytouch
+NeMo (Nvidia)
+Dreambooth (images)
+```
+
+```
+Unsloth
+
+dep:
+    nvidia-cuda-toolkit
+    pytorch
+
+    transformers
+    peft
+    datasets
+
+    unsloth
+    unsloth_zoo
+
+    bitsandbytes
+```
+
+```
+Serve with vLLM
 ```
 
 #### Test the fine-tuned model
