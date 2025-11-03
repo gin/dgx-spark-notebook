@@ -13,6 +13,7 @@ Notes and things I noticed while setting up a DGX Spark mini-PC.
     - [Thinking](#thinking)
     - [Speculative decoding](#speculative-decoding)
     - [NIM](#NIM)
+- [etc](#etc)
 
 ----
 ### Setup remote login
@@ -110,7 +111,52 @@ dep:
 ```
 
 ```
+PyTorch
+
+dep:
+    transformers
+    peft
+    datasets
+    trl
+    bitsandbytes
+```
+
+e.g.
+```python
+import pytorch
+from trl import SFTConfig, SFTTrainer
+# Config, load dataset, then:
+trainer = SFTTrainer(...)
+trainer_stats = trainer.train()
+```
+
+Output:
+https://github.com/NVIDIA/dgx-spark-playbooks/blob/main/nvidia/pytorch-fine-tune/assets/Llama3_8B_LoRA_finetuning.py
+```
+============================================================
+TRAINING COMPLETED
+============================================================
+Training runtime: 76.69 seconds
+Samples per second: 6.52
+Steps per second: 1.63
+Train loss: 1.0082
+============================================================
+```
+
+```
 Serve with vLLM
+```
+
+Huggingface.co gives free 5TB public, 100GB private model storage  
+    specify <USERNAME_OR_ORG>/<MODEL_NAME>, <WRITE_ACCESS_TOKEN>  
+    https://huggingface.co/settings/tokens/new?tokenType=write
+
+e.g.
+```python
+from unsloth import FastLanguageModel
+model, tokenizer = FastLanguageModel.from_pretrained(...)
+# Some fine-tuning steps, then:
+model.push_to_hub_merged("hLuigi/gpt_oss_20B_RL_2048_Game", tokenizer, token = "hf_123ABC", save_method = "mxfp4")
 ```
 
 #### Test the fine-tuned model
@@ -127,7 +173,12 @@ TBA
 ----
 ### Optimizations
 ```
-TBA
+fp16 is standard
+    because GPUs older than hopper does not support fp8
+    some report fp16 scales better than bp16
+
+mxfp4
+    hopper and newer architectures support it (e.g. RTX 50xx, Hx00, Bx00)
 ```
 
 #### Thinking
@@ -146,4 +197,11 @@ TBA
 ```
 Container
 "Nvidia Inference Microservice"
+```
+
+### etc
+```
+flush the buffer cache using:
+
+sudo sh -c ‘sync; echo 3 > /proc/sys/vm/drop_caches’
 ```
