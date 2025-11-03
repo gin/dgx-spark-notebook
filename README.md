@@ -143,9 +143,12 @@ Train loss: 1.0082
 ============================================================
 ```
 
-```
-Serve with vLLM
-```
+Serve with vLLM  
+https://github.com/vllm-project/vllm
+
+nano-vLLM for understanding, like nanoGPT?  
+https://github.com/GeeeekExplorer/nano-vllm
+
 
 Huggingface.co gives free 5TB public, 100GB private model storage  
     specify <USERNAME_OR_ORG>/<MODEL_NAME>, <WRITE_ACCESS_TOKEN>  
